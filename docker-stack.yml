@@ -79,7 +79,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.role == manager
+          - node.labels.milq.monitoring.manager == true
       resources:
         limits:
           memory: 128M
@@ -87,13 +87,9 @@ services:
           memory: 64M
 
   alertmanager:
-    image: stefanprodan/swarmprom-alertmanager:v0.14.0
+    image: milqmedia/alertmanager:latest
     networks:
       - net
-    environment:
-      - SLACK_URL=${SLACK_URL:-https://hooks.slack.com/services/TOKEN}
-      - SLACK_CHANNEL=${SLACK_CHANNEL:-general}
-      - SLACK_USER=${SLACK_USER:-alertmanager}
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
       - '--storage.path=/alertmanager'
@@ -104,7 +100,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.role == manager
+          - node.labels.milq.monitoring.manager == true
       resources:
         limits:
           memory: 128M
@@ -120,9 +116,12 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - node.labels.milq.monitoring.manager == true
 
   node-exporter:
-    image: stefanprodan/swarmprom-node-exporter:v0.16.0
+    image: milqmedia/node-exporter:latest
     networks:
       - net
     environment:
@@ -145,6 +144,9 @@ services:
           memory: 128M
         reservations:
           memory: 64M
+      placement:
+        constraints:
+          - node.labels.milq.monitoring.manager == true
 
   prometheus:
     image: stefanprodan/swarmprom-prometheus:v2.5.0
@@ -166,7 +168,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.role == manager
+          - node.labels.milq.monitoring.manager == true
       resources:
         limits:
           memory: 2048M
@@ -193,7 +195,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.role == manager
+          - node.labels.milq.monitoring.manager == true
       resources:
         limits:
           memory: 128M
