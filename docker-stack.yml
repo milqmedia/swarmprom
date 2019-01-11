@@ -93,6 +93,12 @@ services:
     command:
       - '--config.file=/etc/alertmanager/alertmanager.yml'
       - '--storage.path=/alertmanager'
+    environment:
+      - SMTP_HOST
+      - SMTP_FROM
+      - SMTP_USER
+      - SMTP_PASSWORD
+      - ALERT_EMAILS
     volumes:
       - alertmanager:/alertmanager
     deploy:

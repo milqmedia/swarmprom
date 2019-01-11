@@ -7,6 +7,7 @@ groups:
     for: 1m
     labels:
       severity: warning
+      environment: '{{ $labels.env }}'
     annotations:
       description: Swarm node {{ $labels.node_name }} CPU usage is at {{ humanize
         $value}}%.
