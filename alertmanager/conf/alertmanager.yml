@@ -1,11 +1,17 @@
+global:
+  #smtp_smarthost: <host>#
+  #smtp_from: <from>#
+  #smtp_auth_username: <user>#
+  #smtp_auth_password: <password>#
+
 route:
-    receiver: 'slack'
+    receiver: 'email'
 
 receivers:
-    - name: 'slack'
-      slack_configs:
+    - name: 'email'
+      email_configs:
           - send_resolved: true
+            to: <emails>
+            html: "{{ .CommonAnnotations.description }}"
             text: "{{ .CommonAnnotations.description }}"
-            #username: <user>#
-            #channel: <channel>#
-            #api_url: <url>#
+
