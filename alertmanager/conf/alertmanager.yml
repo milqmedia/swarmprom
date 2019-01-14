@@ -11,7 +11,7 @@ receivers:
     - name: 'email'
       email_configs:
           - send_resolved: true
-            to: <emails>
+            # to: <emails> #
             html: "{{ .CommonAnnotations.description }}"
             text: "{{ .CommonAnnotations.description }}"
 
