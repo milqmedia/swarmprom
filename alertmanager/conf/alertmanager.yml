@@ -25,7 +25,7 @@ receivers:
     - name: 'email-devs'
       email_configs:
           - send_resolved: true
-            # to: <emails> #
+            #to: <emails>#
             html: "{{ .CommonAnnotations.description }}"
             text: "{{ .CommonAnnotations.description }}"
 
