@@ -28,4 +28,3 @@ receivers:
         #to: <emails>#
         html: "{{ .CommonAnnotations.description }}"
         text: "{{ .CommonAnnotations.description }}"
-        
