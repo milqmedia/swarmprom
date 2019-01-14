@@ -22,10 +22,10 @@ route:
       receiver: 'email-devs'
   
 receivers:
-    - name: 'email-devs'
-      email_configs:
-          - send_resolved: true
-            #to: <emails>#
-            html: "{{ .CommonAnnotations.description }}"
-            text: "{{ .CommonAnnotations.description }}"
-
+  - name: 'email-devs'
+    email_configs:
+      - send_resolved: true
+        #to: <emails>#
+        html: "{{ .CommonAnnotations.description }}"
+        text: "{{ .CommonAnnotations.description }}"
+        
