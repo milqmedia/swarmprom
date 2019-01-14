@@ -5,20 +5,20 @@ networks:
     driver: overlay
     attachable: true
 
+configs:
+  monitoring_caddy_config:
+    external: true
+  monitoring_dockerd_config:
+    external: true
+  monitoring_node_rules:
+    external: true
+  monitoring_task_rules:
+    external: true
+    
 volumes:
     prometheus: {}
     grafana: {}
     alertmanager: {}
-
-configs:
-  caddy_config:
-    file: ./caddy/Caddyfile
-  dockerd_config:
-    file: ./dockerd-exporter/Caddyfile
-  node_rules:
-    file: ./prometheus/rules/swarm_node.rules.yml
-  task_rules:
-    file: ./prometheus/rules/swarm_task.rules.yml
 
 services:
   dockerd-exporter:
@@ -28,7 +28,7 @@ services:
     environment:
       - DOCKER_GWBRIDGE_IP=172.18.0.1
     configs:
-      - source: dockerd_config
+      - source: monitoring_dockerd_config
         target: /etc/caddy/Caddyfile
     deploy:
       mode: global
@@ -97,7 +97,6 @@ services:
       - SMTP_HOST
       - SMTP_FROM
       - SMTP_USER
-      - SMTP_PASSWORD
       - ALERT_EMAILS
     volumes:
       - alertmanager:/alertmanager
@@ -137,6 +136,12 @@ services:
       - /sys:/host/sys:ro
       - /:/rootfs:ro
       - /etc/hostname:/etc/nodename
+      - /etc/milq/:/etc/milq
+    ports:
+      - target: 9100
+        published: 9111
+        protocol: tcp
+        mode: host
     command:
       - '--path.sysfs=/host/sys'
       - '--path.procfs=/host/proc'
@@ -150,9 +155,6 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-      placement:
-        constraints:
-          - node.labels.milq.monitoring.manager == true
 
   prometheus:
     image: stefanprodan/swarmprom-prometheus:v2.5.0
@@ -165,9 +167,9 @@ services:
     volumes:
       - prometheus:/prometheus
     configs:
-      - source: node_rules
+      - source: monitoring_node_rules
         target: /etc/prometheus/swarm_node.rules.yml
-      - source: task_rules
+      - source: monitoring_task_rules
         target: /etc/prometheus/swarm_task.rules.yml
     deploy:
       mode: replicated
@@ -184,17 +186,29 @@ services:
   caddy:
     image: stefanprodan/caddy
     ports:
-      - "3000:3000"
-      - "9090:9090"
-      - "9093:9093"
-      - "9094:9094"
+      - target: 3000
+        published: 3000
+        protocol: tcp
+        mode: host
+      - target: 9090
+        published: 9090
+        protocol: tcp
+        mode: host
+      - target: 9093
+        published: 9093
+        protocol: tcp
+        mode: host
+      - target: 9094
+        published: 9094
+        protocol: tcp
+        mode: host
     networks:
       - net
     environment:
       - ADMIN_USER=${ADMIN_USER:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
     configs:
-      - source: caddy_config
+      - source: monitoring_caddy_config
         target: /etc/caddy/Caddyfile
     deploy:
       mode: replicated

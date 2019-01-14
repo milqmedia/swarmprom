@@ -1,9 +1,3 @@
-global:
-    #smtp_smarthost: <host>#
-    #smtp_from: <from>#
-    #smtp_auth_username: <user>#
-    #smtp_auth_password: <password>#
-
 route:
     receiver: 'email-devs'
     group_by: ['environment', 'node']
@@ -20,11 +14,15 @@ route:
         - match:
             envrionment: production
           receiver: 'email-devs'
-    
+
 receivers:
-    - name: 'email-devs'
-      email_configs:
-          - send_resolved: true
-            #to: <emails>#
-            html: "{{ .CommonAnnotations.description }}"
-            text: "{{ .CommonAnnotations.description }}"
+- name: 'email-devs'
+  email_configs:
+  - send_resolved: true
+    html: "{{ .CommonAnnotations.description }}"
+    text: "{{ .CommonAnnotations.description }}"
+    #to: <emails>#
+    #from: <from>#
+    #smarthost: <host>#
+    #auth_username: <user>#
+    #auth_password: <password>#
