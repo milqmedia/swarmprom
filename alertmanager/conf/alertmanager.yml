@@ -1,30 +1,30 @@
 global:
-  #smtp_smarthost: <host>#
-  #smtp_from: <from>#
-  #smtp_auth_username: <user>#
-  #smtp_auth_password: <password>#
+    #smtp_smarthost: <host>#
+    #smtp_from: <from>#
+    #smtp_auth_username: <user>#
+    #smtp_auth_password: <password>#
 
 route:
-  receiver: 'email-devs'
-  group_by: ['environment', 'node']
-  group_wait: 30s
-  group_interval: 5m
-  repeat_interval: 3h 
-  routes:
-    - match:
-        envrionment: testing
-      group_wait: 10m
-      group_interval: 60m
-      repeat_interval: 24h  
-      receiver: 'email-devs'
-    - match:
-        envrionment: production
-      receiver: 'email-devs'
-  
+    receiver: 'email-devs'
+    group_by: ['environment', 'node']
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 3h 
+    routes:
+        - match:
+            envrionment: testing
+          group_wait: 10m
+          group_interval: 60m
+          repeat_interval: 24h  
+          receiver: 'email-devs'
+        - match:
+            envrionment: production
+          receiver: 'email-devs'
+    
 receivers:
-  - name: 'email-devs'
-    email_configs:
-      - send_resolved: true
-        #to: <emails>#
-        html: "{{ .CommonAnnotations.description }}"
-        text: "{{ .CommonAnnotations.description }}"
+    - name: 'email-devs'
+      email_configs:
+          - send_resolved: true
+            #to: <emails>#
+            html: "{{ .CommonAnnotations.description }}"
+            text: "{{ .CommonAnnotations.description }}"
