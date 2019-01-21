@@ -97,6 +97,7 @@ services:
       - SMTP_HOST
       - SMTP_FROM
       - SMTP_USER
+      - SMTP_PASSWORD
       - ALERT_EMAILS
     volumes:
       - alertmanager:/alertmanager
