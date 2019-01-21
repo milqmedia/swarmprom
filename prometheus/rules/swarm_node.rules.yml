@@ -47,6 +47,5 @@ groups:
       environment: '{{ $labels.env }}'
       node: '{{ $labels.node_name }}'
     annotations:
-      description: Swarm node {{ $labels.node_name }} disk is going to fill up in
-        6h.
+      description: Swarm node {{ $labels.node_name }} disk is going to fill up in 6h.
       summary: Disk fill alert for Swarm node '{{ $labels.node_name }}'

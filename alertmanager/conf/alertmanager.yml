@@ -7,9 +7,9 @@ route:
     routes:
         - match:
             envrionment: testing
-          group_wait: 10m
+          group_wait: 24h
           group_interval: 60m
-          repeat_interval: 24h  
+          repeat_interval: 168h  
           receiver: 'email-devs'
         - match:
             envrionment: production
