@@ -179,9 +179,9 @@ services:
           - node.labels.milq.monitoring.manager == true
       resources:
         limits:
-          memory: 256M
+          memory: 512M
         reservations:
-          memory: 128M
+          memory: 256M
 
   caddy:
     image: stefanprodan/caddy
